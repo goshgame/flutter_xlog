@@ -29,7 +29,7 @@ mars，就可以通过 xlog 写入 native 日志。
 
 ```yaml
 dependencies:
-  flutter_xlog_ffi: ^0.0.1
+  flutter_xlog_ffi: ^0.0.2
 ```
 
 引入包：

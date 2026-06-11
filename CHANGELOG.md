@@ -1,3 +1,8 @@
+## 0.0.2
+
+- Fixed the iOS podspec name so Flutter and CocoaPods can resolve the
+  `flutter_xlog_ffi` plugin correctly.
+
 ## 0.0.1
 
 - Initial Flutter FFI xlog plugin release.

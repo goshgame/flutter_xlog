@@ -10,12 +10,9 @@ dart pub publish --dry-run
 
 Before running `dart pub publish`, confirm:
 
-- `flutter_xlog` already exists on pub.dev and dry-run reported the latest
-  published version as `0.1.1`. Publish only if you own that package and bump
-  this package above the published version; otherwise rename the package before
-  publishing.
+- Confirm that you own `flutter_xlog_ffi` on pub.dev and that the version in
+  `pubspec.yaml` is higher than the latest published version.
 - `pubspec.yaml` points to the final public repository, homepage, and issue tracker.
-- Replace the placeholder `https://github.com/your-org/flutter_xlog` URLs before publishing.
 - `LICENSE` contains the final copyright holder.
 - `NOTICE` has been reviewed against the license terms of all bundled native binaries.
 - `README.md` describes supported platforms, bundled artifacts, setup, and lifecycle usage.

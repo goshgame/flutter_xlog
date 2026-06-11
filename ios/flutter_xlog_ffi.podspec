@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
-  s.name             = 'flutter_xlog'
+  s.name             = 'flutter_xlog_ffi'
   s.version          = '0.0.2'
   s.summary          = 'Flutter FFI bridge for Tencent mars xlog.'
   s.description      = <<-DESC
 Flutter FFI plugin that exposes Tencent mars xlog APIs on iOS.
                        DESC
-  s.homepage         = 'https://example.com/flutter_xlog'
+  s.homepage         = 'https://github.com/goshgame/flutter_xlog'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'gosh' => 'dev@example.com' }
+  s.author           = { 'gosh' => 'https://github.com/goshgame' }
   s.source           = { :path => '.' }
   # 仅对外暴露稳定的 C 头；桥接实现随动态 xcframework 一并分发，宿主不再编译 ObjC++ 源码。
   s.source_files     = ['Classes/xlog_bridge.h']

@@ -29,7 +29,7 @@ Add the dependency:
 
 ```yaml
 dependencies:
-  flutter_xlog_ffi: ^0.0.1
+  flutter_xlog_ffi: ^0.0.2
 ```
 
 Import it:
