@@ -3,22 +3,40 @@ import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 
+/// Severity level used when writing an xlog entry.
 enum XLogLevel {
+  /// Verbose diagnostic output.
   verbose(0),
+
+  /// Debug output for development-time diagnostics.
   debug(1),
+
+  /// Informational output for normal runtime events.
   info(2),
+
+  /// Warning output for recoverable problems.
   warn(3),
+
+  /// Error output for failures that should be investigated.
   error(4);
 
   const XLogLevel(this.value);
+
+  /// Native mars xlog integer value for this level.
   final int value;
 }
 
+/// Native xlog write mode.
 enum XLogMode {
+  /// Write logs synchronously.
   sync(0),
+
+  /// Buffer and write logs asynchronously.
   async(1);
 
   const XLogMode(this.value);
+
+  /// Native mars xlog integer value for this mode.
   final int value;
 }
 
@@ -73,9 +91,15 @@ typedef _XlogSetConsoleLogOpenDart = void Function(int isOpen);
 typedef _XlogIsAvailableNative = Int32 Function();
 typedef _XlogIsAvailableDart = int Function();
 
+/// Singleton wrapper around the bundled native mars xlog library.
+///
+/// Call [init] once before writing logs, then use [v], [d], [i], [w], [e], or
+/// [log] to emit entries. Call [flush] when pending logs must be persisted and
+/// [close] when the logger is no longer needed.
 class FlutterXLog {
   FlutterXLog._();
 
+  /// Shared xlog instance used by applications.
   static final FlutterXLog instance = FlutterXLog._();
 
   bool _initialized = false;
@@ -91,6 +115,11 @@ class FlutterXLog {
   String? _pendingPublicKey;
   bool _pendingConsoleLogOpen = false;
 
+  /// Initializes the native xlog runtime.
+  ///
+  /// [logDir] is the final log directory and [cacheDir] is the temporary cache
+  /// directory used by xlog. Optional size, age, public-key, and console-log
+  /// settings are passed through to the native library.
   void init({
     required String logDir,
     required String cacheDir,
@@ -156,6 +185,10 @@ class FlutterXLog {
     _initialized = true;
   }
 
+  /// Stores the xlog public key to use during [init].
+  ///
+  /// This must be called before [init]. Pass [publicKey] directly to [init] if
+  /// you prefer to configure the key in a single call.
   void setPublicKey(String pubkey) {
     if (_initialized) {
       throw StateError('setPublicKey() must be called before init().');
@@ -163,6 +196,9 @@ class FlutterXLog {
     _pendingPublicKey = pubkey;
   }
 
+  /// Enables or disables native console logging.
+  ///
+  /// When called before [init], the setting is applied during initialization.
   void setConsoleLogOpen(bool isOpen) {
     _pendingConsoleLogOpen = isOpen;
     if (!_initialized) {
@@ -171,6 +207,10 @@ class FlutterXLog {
     _setConsoleLogOpen(isOpen ? 1 : 0);
   }
 
+  /// Writes a log entry with the given [level], [tag], and [message].
+  ///
+  /// Optional source metadata can be supplied with [fileName], [funcName], and
+  /// [line].
   void log(
     XLogLevel level,
     String tag,
@@ -190,31 +230,43 @@ class FlutterXLog {
     });
   }
 
+  /// Writes a verbose log entry.
   void v(String tag, String message) {
     log(XLogLevel.verbose, tag, message);
   }
 
+  /// Writes a debug log entry.
   void d(String tag, String message) {
     log(XLogLevel.debug, tag, message);
   }
 
+  /// Writes an informational log entry.
   void i(String tag, String message) {
     log(XLogLevel.info, tag, message);
   }
 
+  /// Writes a warning log entry.
   void w(String tag, String message) {
     log(XLogLevel.warn, tag, message);
   }
 
+  /// Writes an error log entry.
   void e(String tag, String message) {
     log(XLogLevel.error, tag, message);
   }
 
+  /// Flushes pending log data to storage.
+  ///
+  /// Set [sync] to `true` when the caller must wait for native flushing to
+  /// complete.
   void flush({bool sync = false}) {
     _ensureInitialized();
     _flush(sync ? 1 : 0);
   }
 
+  /// Closes the native xlog runtime.
+  ///
+  /// Calling this before [init] is a no-op.
   void close() {
     if (!_initialized) {
       return;

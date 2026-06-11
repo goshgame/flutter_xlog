@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_xlog/flutter_xlog.dart';
+import 'package:flutter_xlog_ffi/flutter_xlog_ffi.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() {

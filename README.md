@@ -29,13 +29,13 @@ Add the dependency:
 
 ```yaml
 dependencies:
-  flutter_xlog: ^0.0.1
+  flutter_xlog_ffi: ^0.0.1
 ```
 
 Import it:
 
 ```dart
-import 'package:flutter_xlog/flutter_xlog.dart';
+import 'package:flutter_xlog_ffi/flutter_xlog_ffi.dart';
 ```
 
 Initialize xlog before writing logs:
