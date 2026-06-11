@@ -1,0 +1,10 @@
+flutter_xlog packages a Flutter FFI bridge for Tencent mars xlog.
+
+Tencent mars is distributed by Tencent under the license terms published with
+the upstream mars project. Before publishing this package, verify that the
+bundled Android shared libraries and iOS xcframework may be redistributed under
+your chosen package license and release process.
+
+This package also includes Android C++ runtime artifacts required by the bundled
+native libraries. Verify redistributable status for every bundled binary before
+uploading to pub.dev.

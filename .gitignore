@@ -1,0 +1,10 @@
+.dart_tool/
+.packages
+build/
+example/.dart_tool/
+example/build/
+example/.idea/
+.ndk_shim/
+build_tools/.cache/
+android/.gradle/
+android/.cxx

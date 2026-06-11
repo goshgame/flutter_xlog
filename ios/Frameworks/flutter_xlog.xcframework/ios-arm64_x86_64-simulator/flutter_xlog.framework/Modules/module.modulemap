@@ -1,0 +1,5 @@
+framework module flutter_xlog {
+  umbrella header "xlog_bridge.h"
+  export *
+  module * { export * }
+}
