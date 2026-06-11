@@ -1,4 +1,4 @@
-name: flutter_xlog
+name: flutter_xlog_ffi
 description: A Flutter FFI plugin that packages Tencent mars xlog for Android and iOS logging.
 version: 0.0.1
 homepage: https://github.com/goshgame/flutter_xlog

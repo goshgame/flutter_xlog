@@ -8,3 +8,4 @@ example/.idea/
 build_tools/.cache/
 android/.gradle/
 android/.cxx
+pubspec.lock
