@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <i>A Flutter FFI plugin for Tencent mars xlog on Android and iOS.</i>
+  <i>面向 Android 和 iOS 的 Tencent mars xlog Flutter FFI 插件。</i>
 </p>
 
 <p align="center">
@@ -17,28 +17,28 @@
 
 # flutter_xlog
 
-[中文文档](README_CN.md)
+[English](README_EN.md)
 
-`flutter_xlog` packages Tencent mars xlog behind a small Flutter FFI API. It
-ships with native artifacts for Android and iOS, so Flutter apps can write logs
-through xlog without compiling mars inside the host app.
+`flutter_xlog` 用一个轻量的 Flutter FFI API 封装 Tencent mars xlog。包内
+携带 Android 和 iOS native 产物，宿主 Flutter App 不需要在自身工程里编译
+mars，就可以通过 xlog 写入 native 日志。
 
-## Usage
+## 使用
 
-Add the dependency:
+添加依赖：
 
 ```yaml
 dependencies:
   flutter_xlog_ffi: ^0.0.1
 ```
 
-Import it:
+引入包：
 
 ```dart
 import 'package:flutter_xlog_ffi/flutter_xlog_ffi.dart';
 ```
 
-Initialize xlog before writing logs:
+写日志前先初始化 xlog：
 
 ```dart
 FlutterXLog.instance.init(
@@ -52,7 +52,7 @@ FlutterXLog.instance.init(
 );
 ```
 
-Write and flush logs:
+写入并 flush 日志：
 
 ```dart
 FlutterXLog.instance.i('Home', 'page opened');
@@ -60,24 +60,24 @@ FlutterXLog.instance.e('Network', 'request failed');
 FlutterXLog.instance.flush(sync: true);
 ```
 
-Close the logger when it is no longer needed:
+不再需要 logger 时关闭：
 
 ```dart
 FlutterXLog.instance.close();
 ```
 
-## Features
+## 功能
 
-- **Flutter FFI API**: Access mars xlog through a compact Dart wrapper.
-- **Android and iOS**: Includes native artifacts for both mobile platforms.
-- **Log lifecycle control**: Initialize, write, flush, and close logs from Dart.
-- **Console log switch**: Enable native console logging when debugging.
-- **Public key support**: Configure an xlog public key before initialization.
-- **Async or sync mode**: Choose the xlog mode that matches your runtime needs.
+- **Flutter FFI API**：通过简洁的 Dart 封装访问 mars xlog。
+- **Android 和 iOS**：内置两个移动平台的 native 产物。
+- **日志生命周期控制**：在 Dart 侧完成初始化、写入、flush 和关闭。
+- **控制台日志开关**：调试时可以打开 native console log。
+- **公钥支持**：初始化前可配置 xlog public key。
+- **同步或异步模式**：按运行时需求选择 xlog mode。
 
-## Public key
+## 公钥
 
-Set a public key before `init()` if your xlog build uses encrypted logs:
+如果你的 xlog 构建使用加密日志，可以在 `init()` 前设置公钥：
 
 ```dart
 FlutterXLog.instance.setPublicKey('your public key');
@@ -87,29 +87,32 @@ FlutterXLog.instance.init(
 );
 ```
 
-You can also pass the key directly to `init(publicKey: ...)`.
+也可以直接通过 `init(publicKey: ...)` 传入。
 
-## Platform notes
+## 平台说明
 
 ### Android
 
-The package includes Android shared libraries for:
+包内包含以下 ABI 的 Android 动态库：
 
 - `armeabi-v7a`
 - `arm64-v8a`
 
-The host app is still responsible for packaging native libraries correctly.
-For Android devices with 16 KB page size, validate the final APK or AAB.
+宿主 App 仍需要正确打包 native libraries。对于 16 KB page size 设备，需要验证最终 APK 或 AAB。
 
 ### iOS
 
-The package includes `ios/Frameworks/flutter_xlog.xcframework` for iOS device
-and simulator builds.
+包内包含 `ios/Frameworks/flutter_xlog.xcframework`，覆盖 iOS 真机和模拟器构建。
 
-## Example
+### 本地编译
 
-See `example/` for a minimal Flutter app that initializes xlog, writes sample
-logs, flushes them, and closes the logger.
+如需重新编译随包分发的 Android 和 iOS native 产物，请参考
+[本地编译说明](build_tools/LOCAL_BUILD.md)。
+
+## 示例
+
+`example/` 提供了一个最小 Flutter App，用于演示初始化 xlog、写入示例日志、flush
+日志并关闭 logger。
 
 ```bash
 cd example

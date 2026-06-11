@@ -17,7 +17,7 @@
 
 # flutter_xlog
 
-[English](README.md)
+[English](README_EN.md)
 
 `flutter_xlog` 用一个轻量的 Flutter FFI API 封装 Tencent mars xlog。包内
 携带 Android 和 iOS native 产物，宿主 Flutter App 不需要在自身工程里编译
@@ -103,6 +103,11 @@ FlutterXLog.instance.init(
 ### iOS
 
 包内包含 `ios/Frameworks/flutter_xlog.xcframework`，覆盖 iOS 真机和模拟器构建。
+
+### 本地编译
+
+如需重新编译随包分发的 Android 和 iOS native 产物，请参考
+[本地编译说明](build_tools/LOCAL_BUILD.md)。
 
 ## 示例
 
