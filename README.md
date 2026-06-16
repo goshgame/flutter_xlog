@@ -1,3 +1,11 @@
+# flutter_xlog
+
+[English](README_EN.md)
+
+`flutter_xlog` 用一个轻量的 Flutter FFI API 封装 Tencent mars xlog。包内
+携带 Android 和 iOS native 产物，宿主 Flutter App 不需要在自身工程里编译
+mars，就可以通过 xlog 写入 native 日志。
+
 <p align="center">
   <strong>flutter_xlog</strong>
 </p>
@@ -14,15 +22,6 @@
 </p>
 
 ---
-
-# flutter_xlog
-
-[English](README_EN.md)
-
-`flutter_xlog` 用一个轻量的 Flutter FFI API 封装 Tencent mars xlog。包内
-携带 Android 和 iOS native 产物，宿主 Flutter App 不需要在自身工程里编译
-mars，就可以通过 xlog 写入 native 日志。
-
 ## 使用
 
 添加依赖：
