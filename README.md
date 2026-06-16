@@ -4,7 +4,7 @@
 mars，就可以通过 xlog 写入 native 日志。
 [English](README_EN.md)
 
-<p align="center">
+<p align="start">
   <img src="https://img.shields.io/badge/platform-Flutter-40c4ff.svg" alt="Flutter Platform Badge">
   <img src="https://img.shields.io/badge/platform-Android%20%7C%20iOS-4caf50.svg" alt="Android and iOS Badge">
   <img src="https://img.shields.io/badge/FFI-native-ff69b4.svg" alt="FFI Native Badge">
