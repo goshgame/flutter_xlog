@@ -29,7 +29,7 @@ mars，就可以通过 xlog 写入 native 日志。
 
 ```yaml
 dependencies:
-  flutter_xlog_ffi: ^0.0.2
+  flutter_xlog_ffi: ^0.0.3
 ```
 
 引入包：
@@ -91,6 +91,10 @@ FlutterXLog.instance.init(
 
 ## 平台说明
 
+所有平台都由 Dart 的 `FlutterXLog.instance.init()` 配置并打开 xlog。原生
+facade 只负责写入和 flush，因此 Flutter 与原生代码会落到同一套 xlog 输出流。
+原生层不能调用 `xlog_open` 或 `xlog_close`。
+
 ### Android
 
 包内包含以下 ABI 的 Android 动态库：
@@ -100,9 +104,64 @@ FlutterXLog.instance.init(
 
 宿主 App 仍需要正确打包 native libraries。对于 16 KB page size 设备，需要验证最终 APK 或 AAB。
 
+Android 的 Java/Kotlin 模块可直接使用 AAR 中的 `XLogNative`：
+
+```kotlin
+import com.gosh.flutter_xlog.XLogNative
+
+XLogNative.i("Player", "decoder initialized")
+XLogNative.e("Player", "decoder failed")
+XLogNative.flush(false)
+```
+
+`write(...)` 可额外传入文件、函数和行号。Kotlin/Java 默认快捷方法不会推断调用点，
+避免为普通日志创建堆栈。
+
+若另一个本地 Flutter plugin 的 Android 原生代码需要写日志，在该 plugin 的
+`android/build.gradle` 中声明：
+
+```gradle
+dependencies {
+    implementation project(':flutter_xlog_ffi')
+}
+```
+
+并在该 plugin 的 `pubspec.yaml` 中添加 `flutter_xlog_ffi: ^0.0.3`，保证 Flutter
+将两个 plugin 一并接入宿主工程。执行 `flutter pub get` 后即可使用 `XLogNative`，
+不需要手动复制 AAR 或 `.so`。
+
 ### iOS
 
 包内包含 `ios/Frameworks/flutter_xlog.xcframework`，覆盖 iOS 真机和模拟器构建。
+
+Objective-C/Swift 导入 `flutter_xlog` 后可使用 `FLXNativeLog`：
+
+```swift
+import flutter_xlog
+
+FLXNativeLog.info(tag: "Player", message: "decoder initialized")
+FLXNativeLog.log(
+  level: .error,
+  tag: "Player",
+  file: #fileID,
+  function: #function,
+  line: #line,
+  message: "decoder failed"
+)
+```
+
+在 Dart 初始化前写入的原生日志会保存在进程内的有界队列中，最多 200 条或 64 KB，
+首次 `init()` 成功后回放。不同进程（Android `android:process`、iOS App Extension）
+不能复用主进程 appender，必须各自初始化并使用独立日志目录或前缀。
+
+若另一个本地 Flutter plugin 的 iOS 原生代码需要写日志，在其 `.podspec` 中声明：
+
+```ruby
+s.dependency 'flutter_xlog_ffi'
+```
+
+随后在 Swift/Objective-C 源文件导入 `flutter_xlog` 并调用 `FLXNativeLog`。执行
+`flutter pub get` 后 Flutter/CocoaPods 会自动链接 XCFramework，不需要手动嵌入它。
 
 ### 本地编译
 

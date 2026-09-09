@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_xlog_ffi'
-  s.version          = '0.0.2'
+  s.version          = '0.0.3'
   s.summary          = 'Flutter FFI bridge for Tencent mars xlog.'
   s.description      = <<-DESC
 Flutter FFI plugin that exposes Tencent mars xlog APIs on iOS.
@@ -9,9 +9,9 @@ Flutter FFI plugin that exposes Tencent mars xlog APIs on iOS.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'gosh' => 'https://github.com/goshgame' }
   s.source           = { :path => '.' }
-  # 仅对外暴露稳定的 C 头；桥接实现随动态 xcframework 一并分发，宿主不再编译 ObjC++ 源码。
-  s.source_files     = ['Classes/xlog_bridge.h']
-  s.public_header_files = 'Classes/xlog_bridge.h'
+  # 对外暴露 C ABI 与 Objective-C facade；实现随动态 xcframework 一并分发。
+  s.source_files = ['Classes/xlog_bridge.h', 'Classes/xlog_native.h', 'Classes/flutter_xlog.h']
+  s.public_header_files = ['Classes/xlog_bridge.h', 'Classes/xlog_native.h', 'Classes/flutter_xlog.h']
   s.dependency 'Flutter'
   s.platform         = :ios, '12.0'
   # 统一分发动态 flutter_xlog.xcframework，宿主仅需补齐系统 zlib 链接声明。

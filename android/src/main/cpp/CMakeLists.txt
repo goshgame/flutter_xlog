@@ -24,7 +24,7 @@ if(HAS_MARS_LIB)
     set_target_properties(mars PROPERTIES IMPORTED_LOCATION ${MARS_LIB_PATH})
 endif()
 
-add_library(flutter_xlog SHARED xlog_bridge.cpp)
+add_library(flutter_xlog SHARED xlog_bridge.cpp xlog_jni.cpp)
 
 target_include_directories(
     flutter_xlog
@@ -32,6 +32,8 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${MARS_INCLUDE_LOCAL_PATH}
 )
+
+target_compile_features(flutter_xlog PRIVATE cxx_std_17)
 
 if(HAS_MARS_LIB)
     target_compile_definitions(flutter_xlog PRIVATE FLUTTER_XLOG_HAS_MARS=1)
