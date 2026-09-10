@@ -16,6 +16,9 @@ Before running `dart pub publish`, confirm:
 - `LICENSE` contains the final copyright holder.
 - `NOTICE` has been reviewed against the license terms of all bundled native binaries.
 - `README.md` describes supported platforms, bundled artifacts, setup, and lifecycle usage.
+- `CHANGELOG.md` contains a user-facing entry for the version being published.
+- The Android `XLogNative` and iOS `FLXNativeLog` examples describe how a local
+  Flutter plugin declares its Gradle or CocoaPods dependency.
 - `dart pub publish --dry-run` does not include local caches such as `.gradle`, `.cxx`, `.dart_tool`, or `build_tools/.cache`.
 - Android `arm64-v8a` native libraries were built with 16 KB page-size compatibility.
 - The example app runs on at least one Android device/emulator and one iOS simulator/device.

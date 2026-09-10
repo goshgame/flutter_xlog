@@ -40,6 +40,9 @@ void xlog_flush(int is_sync);
 // 关闭 appender，释放日志资源。
 void xlog_close(void);
 
+// 当前进程内的 appender 是否已打开：1=已打开，0=未打开或不可用。
+int xlog_is_open(void);
+
 // 设置加密公钥（应在 xlog_open 前设置，保证配置生效）。
 void xlog_set_pubkey(const char* pubkey);
 

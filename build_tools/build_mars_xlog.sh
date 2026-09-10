@@ -1038,6 +1038,7 @@ build_ios_bridge_object() {
   local output_obj="$4"
   local bridge_state_root="$5"
   local sync_token="$6"
+  local source_file="$7"
   local sysroot
 
   sysroot="$(xcrun --sdk "${sdk}" --show-sdk-path)"
@@ -1054,7 +1055,7 @@ build_ios_bridge_object() {
     -I"${bridge_state_root}" \
     -I"${MARS_ROOT}" \
     -I"${MARS_ROOT}/.." \
-    -c "${PLUGIN_DIR}/ios/Classes/xlog_bridge.mm" \
+    -c "${source_file}" \
     -o "${output_obj}"
 }
 
@@ -1068,10 +1069,12 @@ create_ios_dynamic_framework_bundle() {
   mkdir -p "${framework_dir}/Headers" "${framework_dir}/Modules"
   cp -f "${binary_path}" "${framework_dir}/flutter_xlog"
   cp -f "${PLUGIN_DIR}/ios/Classes/xlog_bridge.h" "${framework_dir}/Headers/xlog_bridge.h"
+  cp -f "${PLUGIN_DIR}/ios/Classes/xlog_native.h" "${framework_dir}/Headers/xlog_native.h"
+  cp -f "${PLUGIN_DIR}/ios/Classes/flutter_xlog.h" "${framework_dir}/Headers/flutter_xlog.h"
 
   cat > "${framework_dir}/Modules/module.modulemap" <<'EOF'
 framework module flutter_xlog {
-  umbrella header "xlog_bridge.h"
+  umbrella header "flutter_xlog.h"
   export *
   module * { export * }
 }
@@ -1115,7 +1118,8 @@ link_ios_dynamic_framework_binary() {
   local min_version_flag="$3"
   local output_binary="$4"
   local bridge_obj="$5"
-  local mars_lib="$6"
+  local native_obj="$6"
+  local mars_lib="$7"
   local sysroot
 
   sysroot="$(xcrun --sdk "${sdk}" --show-sdk-path)"
@@ -1131,6 +1135,7 @@ link_ios_dynamic_framework_binary() {
     -framework Security \
     -ObjC \
     "${bridge_obj}" \
+    "${native_obj}" \
     "${mars_lib}" \
     -lz \
     -lc++ \
@@ -1146,8 +1151,11 @@ build_ios_bridge() {
   local os_mars_lib="${mars_artifact_root}/ios-arm64/libmars.a"
   local sim_mars_lib="${mars_artifact_root}/ios-arm64_x86_64-simulator/libmars.a"
   local os_obj="${bridge_build_dir}/iphoneos/arm64/xlog_bridge.o"
+  local os_native_obj="${bridge_build_dir}/iphoneos/arm64/xlog_native.o"
   local sim_x86_obj="${bridge_build_dir}/iphonesimulator/x86_64/xlog_bridge.o"
+  local sim_x86_native_obj="${bridge_build_dir}/iphonesimulator/x86_64/xlog_native.o"
   local sim_arm64_obj="${bridge_build_dir}/iphonesimulator/arm64/xlog_bridge.o"
+  local sim_arm64_native_obj="${bridge_build_dir}/iphonesimulator/arm64/xlog_native.o"
   local os_binary="${bridge_build_dir}/iphoneos/arm64/flutter_xlog"
   local sim_x86_binary="${bridge_build_dir}/iphonesimulator/x86_64/flutter_xlog"
   local sim_arm64_binary="${bridge_build_dir}/iphonesimulator/arm64/flutter_xlog"
@@ -1171,14 +1179,17 @@ build_ios_bridge() {
     exit 1
   fi
 
-  build_ios_bridge_object "iphoneos" "arm64" "-miphoneos-version-min" "${os_obj}" "${bridge_state_root}" "${sync_token}"
-  link_ios_dynamic_framework_binary "iphoneos" "arm64" "-miphoneos-version-min" "${os_binary}" "${os_obj}" "${os_mars_lib}"
+  build_ios_bridge_object "iphoneos" "arm64" "-miphoneos-version-min" "${os_obj}" "${bridge_state_root}" "${sync_token}" "${PLUGIN_DIR}/ios/Classes/xlog_bridge.mm"
+  build_ios_bridge_object "iphoneos" "arm64" "-miphoneos-version-min" "${os_native_obj}" "${bridge_state_root}" "${sync_token}" "${PLUGIN_DIR}/ios/Classes/xlog_native.mm"
+  link_ios_dynamic_framework_binary "iphoneos" "arm64" "-miphoneos-version-min" "${os_binary}" "${os_obj}" "${os_native_obj}" "${os_mars_lib}"
 
-  build_ios_bridge_object "iphonesimulator" "x86_64" "-mios-simulator-version-min" "${sim_x86_obj}" "${bridge_state_root}" "${sync_token}"
-  link_ios_dynamic_framework_binary "iphonesimulator" "x86_64" "-mios-simulator-version-min" "${sim_x86_binary}" "${sim_x86_obj}" "${sim_mars_lib}"
+  build_ios_bridge_object "iphonesimulator" "x86_64" "-mios-simulator-version-min" "${sim_x86_obj}" "${bridge_state_root}" "${sync_token}" "${PLUGIN_DIR}/ios/Classes/xlog_bridge.mm"
+  build_ios_bridge_object "iphonesimulator" "x86_64" "-mios-simulator-version-min" "${sim_x86_native_obj}" "${bridge_state_root}" "${sync_token}" "${PLUGIN_DIR}/ios/Classes/xlog_native.mm"
+  link_ios_dynamic_framework_binary "iphonesimulator" "x86_64" "-mios-simulator-version-min" "${sim_x86_binary}" "${sim_x86_obj}" "${sim_x86_native_obj}" "${sim_mars_lib}"
 
-  build_ios_bridge_object "iphonesimulator" "arm64" "-mios-simulator-version-min" "${sim_arm64_obj}" "${bridge_state_root}" "${sync_token}"
-  link_ios_dynamic_framework_binary "iphonesimulator" "arm64" "-mios-simulator-version-min" "${sim_arm64_binary}" "${sim_arm64_obj}" "${sim_mars_lib}"
+  build_ios_bridge_object "iphonesimulator" "arm64" "-mios-simulator-version-min" "${sim_arm64_obj}" "${bridge_state_root}" "${sync_token}" "${PLUGIN_DIR}/ios/Classes/xlog_bridge.mm"
+  build_ios_bridge_object "iphonesimulator" "arm64" "-mios-simulator-version-min" "${sim_arm64_native_obj}" "${bridge_state_root}" "${sync_token}" "${PLUGIN_DIR}/ios/Classes/xlog_native.mm"
+  link_ios_dynamic_framework_binary "iphonesimulator" "arm64" "-mios-simulator-version-min" "${sim_arm64_binary}" "${sim_arm64_obj}" "${sim_arm64_native_obj}" "${sim_mars_lib}"
 
   lipo -create "${sim_x86_binary}" "${sim_arm64_binary}" -output "${sim_binary}"
 

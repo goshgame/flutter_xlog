@@ -31,6 +31,7 @@ add_library(
   flutter_xlog
   SHARED
   "${PLUGIN_DIR}/android/src/main/cpp/xlog_bridge.cpp"
+  "${PLUGIN_DIR}/android/src/main/cpp/xlog_jni.cpp"
 )
 
 target_include_directories(
@@ -43,4 +44,5 @@ target_include_directories(
 )
 
 target_compile_definitions(flutter_xlog PRIVATE FLUTTER_XLOG_HAS_MARS=1)
+target_compile_features(flutter_xlog PRIVATE cxx_std_17)
 target_link_libraries(flutter_xlog c++_shared mars ${log_lib})
