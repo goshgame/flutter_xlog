@@ -18,7 +18,7 @@ mars，就可以通过 xlog 写入 native 日志。
 
 ```yaml
 dependencies:
-  flutter_xlog_ffi: ^0.0.3
+  flutter_xlog_ffi: ^0.0.4
 ```
 
 引入包：
@@ -115,7 +115,7 @@ dependencies {
 }
 ```
 
-并在该 plugin 的 `pubspec.yaml` 中添加 `flutter_xlog_ffi: ^0.0.3`，保证 Flutter
+并在该 plugin 的 `pubspec.yaml` 中添加 `flutter_xlog_ffi: ^0.0.4`，保证 Flutter
 将两个 plugin 一并接入宿主工程。执行 `flutter pub get` 后即可使用 `XLogNative`，
 不需要手动复制 AAR 或 `.so`。
 

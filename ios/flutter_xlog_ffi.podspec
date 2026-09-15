@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_xlog_ffi'
-  s.version          = '0.0.3'
+  s.version          = '0.0.4'
   s.summary          = 'Flutter FFI bridge for Tencent mars xlog.'
   s.description      = <<-DESC
 Flutter FFI plugin that exposes Tencent mars xlog APIs on iOS.
