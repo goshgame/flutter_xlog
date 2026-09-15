@@ -1,3 +1,8 @@
+## 0.0.4
+
+- Fixed invalid iOS `flutter_xlog.framework` bundle identifiers in the
+  prebuilt xcframework.
+
 ## 0.0.3
 
 - Added `XLogNative` for Android Java/Kotlin code and `FLXNativeLog` for iOS

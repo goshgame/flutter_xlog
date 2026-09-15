@@ -1193,8 +1193,8 @@ build_ios_bridge() {
 
   lipo -create "${sim_x86_binary}" "${sim_arm64_binary}" -output "${sim_binary}"
 
-  create_ios_dynamic_framework_bundle "${os_framework}" "${os_binary}" "com.gosh.flutter_xlog.iphoneos" "iPhoneOS"
-  create_ios_dynamic_framework_bundle "${sim_framework}" "${sim_binary}" "com.gosh.flutter_xlog.iphonesimulator" "iPhoneSimulator"
+  create_ios_dynamic_framework_bundle "${os_framework}" "${os_binary}" "com.gosh.flutter-xlog.iphoneos" "iPhoneOS"
+  create_ios_dynamic_framework_bundle "${sim_framework}" "${sim_binary}" "com.gosh.flutter-xlog.iphonesimulator" "iPhoneSimulator"
 
   mkdir -p "${framework_output_dir}"
   rm -rf "${xcframework_output}"
