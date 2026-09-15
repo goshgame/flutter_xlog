@@ -29,7 +29,7 @@ Add the dependency:
 
 ```yaml
 dependencies:
-  flutter_xlog_ffi: ^0.0.3
+  flutter_xlog_ffi: ^0.0.4
 ```
 
 Import it:
@@ -127,7 +127,7 @@ dependencies {
 }
 ```
 
-Also add `flutter_xlog_ffi: ^0.0.3` to that plugin's `pubspec.yaml`, so Flutter
+Also add `flutter_xlog_ffi: ^0.0.4` to that plugin's `pubspec.yaml`, so Flutter
 includes both plugins in the host app. After `flutter pub get`, the plugin can
 use `XLogNative` without copying an AAR or shared library manually.
 
